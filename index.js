@@ -7,10 +7,14 @@ const fetch = require('node-fetch'); // In a Node.js environment, you can use 'n
 
 app.use(express.json());
 
-app.use(cors({
-  origin: 'https://chat-app-wine-one.vercel.app',
-}));
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://chat-app-wine-one.vercel.app');
+  // You can also set other CORS headers if needed
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 
 app.post("/authenticate", async (req, res) => {
@@ -21,7 +25,7 @@ app.post("/authenticate", async (req, res) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'private-key': 'f17a59dc-29e4-450c-b6b8-748e0334e7ab',
+        'private-key': process.env.CHAT_ENGINE_PRIVATE_KEY,
       },
       body: JSON.stringify({ username: username, secret: username, firstname: username }),
     });
