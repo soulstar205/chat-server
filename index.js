@@ -8,7 +8,7 @@ const fetch = require('node-fetch'); // In a Node.js environment, you can use 'n
 app.use(express.json());
 
 app.use(cors({
-  origin: ["https://chat-app-wine-one.vercel.app/", "http://localhost:3000"],
+  origin: ["https://chat-app-wine-one.vercel.app/", "*"],
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ["GET", "PUT", "POST"]
 }))
