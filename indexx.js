@@ -1,8 +1,8 @@
 require("dotenv").config();
-
+import axios from 'axios'
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 
 const app = express();
 app.use(express.json());
@@ -13,13 +13,12 @@ app.post("/signup", async (req, res) => {
 
   // Store a user-copy on Chat Engine!
   try {
-    const response = await fetch("https://api.chatengine.io/users/", {
-      method: "POST",
+    const response = await axios.post("https://api.chatengine.io/users/", {
+      body: JSON.stringify({ username, secret, email, first_name, last_name }),
       headers: {
         "Content-Type": "application/json",
         "Private-Key": process.env.CHAT_ENGINE_PRIVATE_KEY,
       },
-      body: JSON.stringify({ username, secret, email, first_name, last_name }),
     });
 
     if (response.ok) {
@@ -39,7 +38,7 @@ app.post("/login", async (req, res) => {
 
   // Fetch this user from Chat Engine in this project!
   try {
-    const response = await fetch("https://api.chatengine.io/users/me/", {
+    const response = await axios.get("https://api.chatengine.io/users/me/", {
       headers: {
         "Project-ID": process.env.CHAT_ENGINE_PROJECT_ID,
         "User-Name": username,
