@@ -32,23 +32,15 @@ app.post("/signup", async (req, res) => {
 
   // Store a user-copy on Chat Engine!
   try {
-    const response = await axios.post("https://api.chatengine.io/users/", {
-      body: JSON.stringify({ username, secret, email, first_name, last_name }),
-      headers: {
-        "Content-Type": "application/json",
-        "Private-Key": process.env.CHAT_ENGINE_PRIVATE_KEY,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return res.status(response.status).json(data);
-    } else {
-      const errorData = await response.json();
-      return res.status(response.status).json(errorData);
-    }
+    
+    const response = await axios.post(
+      "https://api.chatengine.io/users/",
+      { username, secret, email, first_name, last_name },
+      { headers: { "Private-Key": process.env.CHAT_ENGINE_PRIVATE_KEY } }
+    );
+    return res.status(response.status).json(response.data);
   } catch (e) {
-    return res.status(500).json({ error: e.message });
+    return res.status(e.response.status).json(e.response.data);
   }
 });
 
@@ -57,23 +49,16 @@ app.post("/login", async (req, res) => {
 
   // Fetch this user from Chat Engine in this project!
   try {
-    const response = await axios.get("https://api.chatengine.io/users/me/", {
+    const r = await axios.get("https://api.chatengine.io/users/me/", {
       headers: {
         "Project-ID": process.env.CHAT_ENGINE_PROJECT_ID,
         "User-Name": username,
         "User-Secret": secret,
       },
     });
-
-    if (response.ok) {
-      const data = await response.json();
-      return res.status(response.status).json(data);
-    } else {
-      const errorData = await response.json();
-      return res.status(response.status).json(errorData);
-    }
+    return res.status(r.status).json(r.data);
   } catch (e) {
-    return res.status(500).json({ error: e.message });
+    return res.status(e.response.status).json(e.response.data);
   }
 });
 
