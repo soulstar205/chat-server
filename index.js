@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const express = require('express');
 const app = express();
-// const cors = require("cors");
-const allowCors = require('./allowCors')
+const cors = require("cors");
+// const allowCors = require('./allowCors')
 const fetch = require('node-fetch'); // In a Node.js environment, you can use 'node-fetch' for Fetch API functionality
 
 app.use(express.json());
 
-app.use(allowCors)
-
+// app.use(allowCors)
+app.use(cors())
 // app.use(cors({
 //   origin: ["https://chat-app-wine-one.vercel.app/", "*"],
 //   allowedHeaders: ['Content-Type', 'Authorization'],
