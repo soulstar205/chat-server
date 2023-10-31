@@ -3,18 +3,12 @@ require("dotenv").config();
 const express = require('express');
 const app = express();
 const cors = require("cors");
+const allowCors = require('./allowCors')
 const fetch = require('node-fetch'); // In a Node.js environment, you can use 'node-fetch' for Fetch API functionality
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  // You can also set other CORS headers if needed
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+app.use(allowCors);
 
 
 app.post("/authenticate", async (req, res) => {
